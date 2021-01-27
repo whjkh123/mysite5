@@ -8,6 +8,10 @@ public class UserVo {
 	public String name;
 	public String gender;
 
+	public UserVo() {
+		super();
+	}
+
 	public UserVo(String id, String password, String name, String gender) {
 		super();
 		this.id = id;

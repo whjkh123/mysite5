@@ -30,6 +30,7 @@
 				<div id="greetings">
 					<p class="text-xlarge">
 						Hello Spring 헬로 스프링
+						<br>
 						<a class="" href="${pageContext.request.contextPath }/gbc?action=addlist">[방명록에 글 남기기]</a>
 					</p>
 				</div>

@@ -1,174 +1,150 @@
 package com.javaex.controller;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
 import com.javaex.dao.UserDao;
-import com.javaex.util.WebUtil;
 import com.javaex.vo.UserVo;
 
-@WebServlet("/user")
-public class UserCtrl extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+@Controller
+@RequestMapping(value = "/user")
+public class UserCtrl {
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		System.out.println("UserCtrl");
+	// fields
+	@Autowired
+	private UserDao uDao;
 
-		request.setCharacterEncoding("UTF-8");
+	// constructors
 
-		String act = request.getParameter("action");
+	// get&set method
 
-		if ("joinForm".equals(act)) {
-			System.out.println(act + " 회원가입 창");
+	// general method
+	// joinForm
+	@RequestMapping(value = "/joinForm", method = { RequestMethod.GET, RequestMethod.POST })
+	public String joinForm() {
 
-			// joinForm forword
-			WebUtil.forword(request, response, "/WEB-INF/views/user/joinForm.jsp");
-		} else if ("join".equals(act)) {
-			System.out.println(act + " 회원가입 완료");
+		System.out.println("[joinForm Ctrl]: joinForm 진입");
 
-			// parameter data load
-			// http://localhost:8088/mysite2/user?uid=[]&psw=[]&uname=[]&gender=[]&action=join
-			String id = request.getParameter("uid");
-			String password = request.getParameter("psw");
-			String name = request.getParameter("uname");
-			String gender = request.getParameter("gender");
+		return "user/joinForm";
 
-			// UserVo groupping
-			UserVo uVo = new UserVo(id, password, name, gender);
+	}
 
-			System.out.println(uVo.toString());
+	// mysite/user/join?id=[]&password=[]&name=[]&gender=[]
+	// join
+	@RequestMapping(value = "/join", method = { RequestMethod.GET, RequestMethod.POST })
+	public String join(@ModelAttribute UserVo uVo) {
 
-			// UserDao.insert() execute
-			UserDao uDao = new UserDao();
-			uDao.dbIsrt(uVo);
+		System.out.println("[join Ctrl]: join 진입");
 
-			// joinOk forword
-			WebUtil.forword(request, response, "/WEB-INF/views/user/joinOk.jsp");
-		} else if ("loginForm".equals(act)) {
-			System.out.println(act + " 로그인 창");
+		System.out.println("[join Ctrl]: " + uVo.toString());
 
-			// loginForm forword
-			WebUtil.forword(request, response, "/WEB-INF/views/user/loginForm.jsp");
-		} else if ("login".equals(act)) {
-			System.out.println(act + " 로그인 결과 창");
+		int count = uDao.join(uVo);
 
-			// parameter data load
-			// http://localhost:8088/mysite2/user?id=[]&psw=[]&action=login
-			String id = request.getParameter("id");
-			String psw = request.getParameter("psw");
+		return "user/joinOk";
 
-			// UserDao.get() execute
-			UserDao uDao = new UserDao();
-			UserVo uVo = uDao.getUser(id, psw);
+	}
 
-			if (uVo == null) {
-				System.out.println("로그인 실패");
-				WebUtil.redirect(request, response, "/mysite2/user?action=loginForm&result=fail");
-			} else {
-				System.out.println("로그인 성공");
+	// loginForm
+	@RequestMapping(value = "/loginForm", method = { RequestMethod.GET, RequestMethod.POST })
+	public String loginForm() {
 
-				System.out.println(uVo.toString());
+		System.out.println("[loginForm Ctrl]: loginForm 진입");
 
-				// UserVo session data attribute to jsp
-				// id, password 비교
-				HttpSession session = request.getSession();
-				session.setAttribute("authUser", uVo);
+		return "user/loginForm";
 
-				WebUtil.redirect(request, response, "/mysite2/main");
-			}
+	}
 
-		} else if ("logout".equals(act)) {
-			System.out.println(act + " 로그아웃");
+	// mysite/user/login?id=[]&password=[]
+	// login
+	@RequestMapping(value = "/login", method = { RequestMethod.GET, RequestMethod.POST })
+	public String login(@ModelAttribute UserVo uVo, HttpSession session) {
 
-			// session UserVo data reset
-			HttpSession session = request.getSession();
-			session.removeAttribute("authUser");
-			session.invalidate();
+		System.out.println("[login Ctrl]: login 진입");
 
-			WebUtil.redirect(request, response, "/mysite2/main");
-		} else if ("modifiyForm".equals(act)) {
-			System.out.println(act + " 회원정보 수정 창");
+		System.out.println("[login Ctrl]: " + uVo.toString());
 
-			// UserVo data attribute to jsp
-			HttpSession session = request.getSession();
+		UserVo authUser = uDao.login(uVo);
 
-			// session data(authUser's Vo data) load to modifiyForm
-			UserVo authVo = (UserVo) session.getAttribute("authUser");
+		if (authUser == null) {
 
-			int no = authVo.getNo();
-			
-			// UserDao.getOne(no) execute
-			UserDao uDao = new UserDao();
-			UserVo uVo = uDao.getOne(no);
-			
-			System.out.println(uVo.toString());
+			System.out.println("[login Ctrl]: login 실패");
 
-			// authUser's Vo session data attribute to jsp
-			// >> session.setAttribute("userVo", uVo);// 모든 데이터를 담기 때문에 "세션 데이터는 최소한의 정보만 취급한다."란 정책에 위배 ex) login session date = id, psw
-												// user?no=[]?modifiyForm → 회원정보의 선택 기준은 'no'
-			request.setAttribute("userVo", uVo);
+			return "redirect:/user/loginForm?result=fail";
 
-			// modifiyForm forword
-			WebUtil.forword(request, response, "/WEB-INF/views/user/modifiyForm.jsp");
-		} else if ("modifiy".equals(act)) {
-			System.out.println(act + " 회원정보 수정");
-			// id = test
-			// password = 1234 → 1111
-			// name = 홍길동 → 이효리
-			// gender = male → female
+		} else {
 
-			String psw = request.getParameter("psw");
-			String name = request.getParameter("name");
-			String gender = request.getParameter("gender");
-			// >> int no = Integer.parseInt(request.getParameter("no"));
-			HttpSession session = request.getSession();
-			UserVo authUser = (UserVo)session.getAttribute("authUser");
-			int no = authUser.getNo();
-			// parameter data load
-			// http://localhost:8088/mysite2/user?no=[]&psw=[]&name=[]&gender=[]&action=modifiy
-			// error:java.sql.SQLException: 인덱스에서 누락된 IN 또는 OUT 매개변수:: 4 발생
-			// Update users SET password = ?, name = ?, gender = ? WHERE no = ?
-			// 변수는 4개인데 sql 쿼리문엔 3개만 작성 → 해결
+			System.out.println("[login Ctrl]: login 성공");
 
-			// UserVo groupping
-			UserVo uVo = new UserVo(no, psw, name, gender);
-			
-			System.out.println(uVo.toString());
+			System.out.println("[login Ctrl]: " + authUser.toString());
 
-			// UserDao.update() execute
-			UserDao uDao = new UserDao();
-			uDao.dbUpd(uVo);
+			session.setAttribute("authUser", authUser);
 
-			// #1 id = test, password = 1234 login
-			// #2 회원정보 수정 password = 1234 → 1111, name = 홍길동 → 이효리, gender = male → female
-			// #3 sql users table 상에서 데이터 변경 확인
-			// #4 'modifiyForm'에서 '회원정보수정'을 클릭 후 'main'으로 redirect 됐을 시 name = 홍길동 유지
-			// #5 logout 후 id = test, password = 1111 login 성공, name = 이효리 변경
+			return "redirect:/main";
 
-			// authUser's Vo session data attribute to jsp
-			// 해당 계정(id, password 비교)의 UserVo 데이터 출력
-			// >> HttpSession session = request.getSession();
-			// >> session.setAttribute("authUser", uVo);
-			authUser.setName(name);
-			// 수정 된 데이터를 'session'으로부터 load → 'authUser'에 save
-			// 회원정보 수정 후 데이터 즉시 반영 확인
-			// logout 후 다시 login 했을 시 변경 된 데이터 유지 확인
-
-			WebUtil.redirect(request, response, "/mysite2/main");
 		}
 
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
+	// logout
+	@RequestMapping(value = "/logout", method = { RequestMethod.GET, RequestMethod.POST })
+	public String logout(HttpSession session) {
+
+		System.out.println("[logout Ctrl]: logout 진입");
+
+		session.removeAttribute("authUser");
+		session.invalidate();
+
+		return "redirect:/main";
+
+	}
+
+	// modifyForm
+	@RequestMapping(value = "/modifyForm", method = { RequestMethod.GET, RequestMethod.POST })
+	public String modifyForm(HttpSession session, Model model) {
+
+		System.out.println("[modifyForm Ctrl]: modifyForm 진입");
+
+		UserVo authUser = (UserVo) session.getAttribute("authUser");
+
+		authUser = uDao.selectOne(authUser.getNo());
+
+		System.out.println("[modifyForm Ctrl]: " + authUser.toString());
+
+		model.addAttribute("authVo", authUser);
+
+		return "user/modifyForm";
+
+	}
+
+	// modify
+	@RequestMapping(value = "/modify", method = { RequestMethod.GET, RequestMethod.POST })
+	public String moidfy(@ModelAttribute UserVo uVo, HttpSession session) {
+
+		System.out.println("[modify Ctrl]: modify 진입");
+
+		uDao.modify(uVo);
+
+		System.out.println("[modify Ctrl]: " + uVo.toString());
+
+		// id = test
+		// password = 1234 → 1111
+		// name = 홍길동 → 김태희
+		// gender = male → female
+		// 여기까지의 과정 후 db table상엔 수정내용이 적용 되었지만, 실제 사이트엔 적용 안 됨
+		// ※ 수정한 회원정보를 session에 저장 할 필요가 있어보임
+
+		UserVo authUser = uDao.session(uVo.getNo());
+
+		session.setAttribute("authUser", authUser);
+
+		return "redirect:/main";
+
 	}
 
 }

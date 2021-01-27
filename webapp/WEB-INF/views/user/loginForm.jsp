@@ -34,7 +34,7 @@
 
 			<div id="user">
 				<div id="loginForm">
-					<form action="${pageContext.request.contextPath }/user" method="post">
+					<form action="${pageContext.request.contextPath }/user/login" method="get">
 
 						<!-- 아이디 -->
 						<div class="form-group">
@@ -45,7 +45,7 @@
 						<!-- 비밀번호 -->
 						<div class="form-group">
 							<label class="form-text" for="input-pass">비밀번호</label>
-							<input type="password" id="input-pass" name="psw" value="" placeholder="비밀번호를 입력하세요">
+							<input type="password" id="input-pass" name="password" value="" placeholder="비밀번호를 입력하세요">
 						</div>
 
 						<c:choose>
@@ -62,8 +62,6 @@
 						<div class="button-area">
 							<button type="submit" id="btn-submit">로그인</button>
 						</div>
-
-						<input type="hidden" name="action" value="login">
 
 					</form>
 				</div>

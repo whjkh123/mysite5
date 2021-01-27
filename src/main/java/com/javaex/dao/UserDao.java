@@ -1,192 +1,70 @@
 package com.javaex.dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.javaex.vo.UserVo;
 
+@Repository
 public class UserDao {
 
-	private String driver = "oracle.jdbc.driver.OracleDriver";
-	private String url = "jdbc:oracle:thin:@localhost:1521:xe";
-	private String id = "webdb";
-	private String pw = "webdb";
+	// fields
+	@Autowired
+	private SqlSession sql;
 
-	Connection conn = null;
-	PreparedStatement pstmt = null;
-	ResultSet rs = null;
+	// constructors
 
-	public void dbCnt() {
+	// get&set method
 
-		try {
-			Class.forName(driver);
-			conn = DriverManager.getConnection(url, id, pw);
-		} catch (ClassNotFoundException e) {
-			System.out.println("error: 드라이버 로딩 실패 - " + e);
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		}
+	// general method
+	// join(insert)
+	public int join(UserVo uVo) {
+
+		System.out.println("[Dao]: join(UserVo uVo) 실행");
+
+		System.out.println("[Dao]: " + uVo.toString());
+
+		return sql.insert("user.join", uVo);
+	}
+
+	// login(selectOne)
+	public UserVo login(UserVo uVo) {
+
+		System.out.println("[Dao]: login(UserVo uVo) 실행");
+
+		System.out.println("[Dao]: " + uVo.toString());
+
+		return sql.selectOne("user.login", uVo);
 
 	}
 
-	public void close() {
+	// modifyForm(selectOne)
+	public UserVo selectOne(int no) {
 
-		try {
+		System.out.println("[Dao]: selectOne(int no) 실행");
 
-			if (rs != null) {
-				rs.close();
-			}
-			if (pstmt != null) {
-				pstmt.close();
-			}
-			if (conn != null) {
-				conn.close();
-			}
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		}
-	}
-
-	public int dbIsrt(UserVo uVo) {
-
-		dbCnt();
-
-		int count = 0;
-
-		try {
-
-			// INSERT INTO users VALUES(SEQ_NO.nextval, 'whjkh123', '1234', '조경환', '남성');
-			String query = "INSERT INTO users VALUES(SEQ_NO.nextval, ?, ?, ?, ?)";
-			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, uVo.getId());
-			pstmt.setString(2, uVo.getPassword());
-			pstmt.setString(3, uVo.getName());
-			pstmt.setString(4, uVo.getGender());
-
-			count = pstmt.executeUpdate();
-
-			System.out.println("[DAO]: " + count + "건이 저장되었습니다.");
-
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		}
-
-		close();
-
-		return count;
+		return sql.selectOne("user.selectOne", no);
 
 	}
 
-	public UserVo getUser(String id, String psw) {
+	// modify(update)
+	public int modify(UserVo uVo) {
 
-		UserVo uVo = null;
+		System.out.println("[Dao]: modify(UserVo uVo) 실행");
 
-		dbCnt();
+		System.out.println("[Dao]: " + uVo.toString());
 
-		try {
-			String query = "";
-			query += " select no, ";
-			query += " 		  name ";
-			query += " from   users ";
-			query += " where  id = ? ";
-			query += " 		  and password = ? ";
-			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, id);
-			pstmt.setString(2, psw);
-
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				int no = rs.getInt("no");
-				String name = rs.getString("name");
-
-				uVo = new UserVo(no, name);
-			}
-
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		}
-
-		close();
-
-		return uVo;
+		return sql.update("user.modify", uVo);
 
 	}
 
-	public UserVo getOne(int no) {// >> public UserVo getUser(int no) → method overriding
+	// modify(update) → session
+	public UserVo session(int no) {
 
-		UserVo uVo = null;
+		System.out.println("[Dao]: session(int no) 실행");
 
-		dbCnt();
-
-		try {
-			String query = "";
-			query += " select no, ";
-			query += " 		  id, ";
-			query += " 		  password, ";
-			query += " 		  name, ";
-			query += " 		  gender ";
-			query += " from   users ";
-			query += " where  no = ? ";
-			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, no);
-
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				int user_no = rs.getInt("no");
-				String id = rs.getString("id");
-				String password = rs.getString("password");
-				String name = rs.getString("name");
-				String gender = rs.getString("gender");
-
-				uVo = new UserVo(user_no, id, password, name, gender);
-			}
-
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		}
-
-		close();
-
-		return uVo;
-
-	}
-
-	public int dbUpd(UserVo uVo) {
-
-		dbCnt();
-
-		int count = 0;
-
-		try {
-
-			String query = "";
-			query += " update users ";
-			query += " SET password = ?, ";
-			query += "     name = ?, ";
-			query += "     gender = ? ";
-			query += " WHERE no = ? ";
-			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, uVo.getPassword());
-			pstmt.setString(2, uVo.getName());
-			pstmt.setString(3, uVo.getGender());
-			pstmt.setInt(4, uVo.getNo());
-
-			count = pstmt.executeUpdate();
-
-			System.out.println("[DAO]: " + count + "건이 수정되었습니다.");
-
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		}
-
-		close();
-
-		return count;
+		return sql.selectOne("user.session", no);
 
 	}
 
