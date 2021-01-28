@@ -8,6 +8,10 @@ public class GuestBookVo {
 	public String content;
 	public String reg_date;
 
+	public GuestBookVo() {
+		super();
+	}
+
 	public GuestBookVo(int no, String name, String password, String content, String reg_date) {
 		super();
 		this.no = no;

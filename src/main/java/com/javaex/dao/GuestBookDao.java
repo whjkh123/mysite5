@@ -1,197 +1,51 @@
 package com.javaex.dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.javaex.vo.GuestBookVo;
 
+@Repository
 public class GuestBookDao {
 
-	private String driver = "oracle.jdbc.driver.OracleDriver";
-	private String url = "jdbc:oracle:thin:@localhost:1521:xe";
-	private String id = "webdb";
-	private String pw = "webdb";
+	@Autowired
+	private SqlSession sql;
 
-	private Connection conn = null;
-	private PreparedStatement pstmt = null;
-	private ResultSet rs = null;
+	// 전체 리스트
+	public List<GuestBookVo> addList() {
 
-	public void dbCnt() {
+		System.out.println("[Dao]: addList() 실행");
 
-		try {
-			Class.forName(driver);
-			conn = DriverManager.getConnection(url, id, pw);
-		} catch (ClassNotFoundException e) {
-			System.out.println("error: 드라이버 로딩 실패 - " + e);
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		}
+		List<GuestBookVo> gList = sql.selectList("guestbook.selectList");
 
-	}
-
-	public void close() {
-
-		try {
-
-			if (rs != null) {
-				rs.close();
-			}
-			if (pstmt != null) {
-				pstmt.close();
-			}
-			if (conn != null) {
-				conn.close();
-			}
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		}
-
-	}
-
-	public int dbIsrt(GuestBookVo gVo) {
-
-		dbCnt();
-
-		int count = 0;
-
-		try {
-			// INSERT INTO guestbook VALUES(seq_no.nextval, 'name', 'password', 'content' ,
-			// sysdate);
-			String query = "INSERT INTO guestbook VALUES(seq_no.nextval, ?, ?, ? , sysdate)";
-			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, gVo.getName());
-			pstmt.setString(2, gVo.getPassword());
-			pstmt.setString(3, gVo.getContent());
-
-			count = pstmt.executeUpdate();
-
-			System.out.println("[DAO]: " + count + "건이 저장되었습니다.");
-
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		}
-
-		close();
-
-		return count;
-
-	}
-
-	public List<GuestBookVo> dbList() {
-
-		List<GuestBookVo> gList = new ArrayList<GuestBookVo>();
-
-		dbCnt();
-
-		try {
-
-			String query = "";
-			query += " select no, ";
-			query += " 		  name, ";
-			query += "        password, ";
-			query += "        content, ";
-			query += "		  TO_CHAR(reg_date, 'yyyy-mm-dd hh:mi:ss') ";
-			query += " from   guestbook ";
-			query += " order by no asc ";
-			pstmt = conn.prepareStatement(query);
-
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-
-				int no = rs.getInt(1);
-				String name = rs.getString(2);
-				String password = rs.getString(3);
-				String content = rs.getString(4);
-				String reg_date = rs.getString(5);
-
-				GuestBookVo gVo = new GuestBookVo(no, name, password, content, reg_date);
-
-				gList.add(gVo);
-
-			}
-
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		}
-
-		close();
+		System.out.println("[Dao]: " + gList.toString());
 
 		return gList;
 
 	}
 
-	public GuestBookVo getOne(int num) {
+	// 방문록 등록
+	public int add(GuestBookVo gVo) {
 
-		GuestBookVo gVo = null;
+		System.out.println("[Dao]: add(GuestBookVo gVo) 실행");
 
-		dbCnt();
+		System.out.println("[Dao]: " + gVo.toString());
 
-		try {
-			String query = "";
-			query += " select no, ";
-			query += " 		  name, ";
-			query += "        password, ";
-			query += "        content, ";
-			query += "		  TO_CHAR(reg_date, 'yyyy-mm-dd hh:mi:ss') ";
-			query += " from   guestbook ";
-			query += " where  no = ? ";
-			query += " order by no asc ";
-			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, num);
-
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-
-				int no = rs.getInt(1);
-				String name = rs.getString(2);
-				String password = rs.getString(3);
-				String content = rs.getString(4);
-				String reg_date = rs.getString(5);
-
-				gVo = new GuestBookVo(no, name, password, content, reg_date);
-
-			}
-		} catch (SQLException e) {
-			// TODO: handle exception
-		}
-
-		close();
-
-		return gVo;
+		return sql.insert("guestbook.insert", gVo);
 
 	}
 
-	public int dbDle(GuestBookVo gVo) {
+	// 방문록 삭제
+	public int delete(GuestBookVo gVo) {
 
-		dbCnt();
+		System.out.println("[Dao]: delete(GuestBookVo gVo) 실행");
 
-		int count = 0;
+		System.out.println("[Dao]: " + gVo.toString());
 
-		try {
-
-			String query = " DELETE FROM guestbook WHERE no = ? and password = ? ";
-			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, gVo.getNo());
-			pstmt.setString(2, gVo.getPassword());
-
-			count = pstmt.executeUpdate();
-
-			System.out.println("[DAO]: " + count + "건이 삭제되었습니다.");
-
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		}
-
-		close();
-
-		return count;
+		return sql.delete("guestbook.delete", gVo);
 
 	}
 

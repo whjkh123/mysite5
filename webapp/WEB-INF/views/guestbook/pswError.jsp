@@ -1,16 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 
-<%@ page import="com.javaex.vo.GuestBookVo"%>
-
-<%
-	int no = Integer.parseInt(request.getParameter("no"));
-%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>My site</title>
+<title>Insert title here</title>
 </head>
 <body>
 
@@ -18,7 +14,11 @@
 
 	<br>
 
-	<a href="${pageContext.request.contextPath }/gbc?action=deleteForm&no=<%=no%>">뒤로가기</a>
+	<a href="${pageContext.request.contextPath }/gbc/dForm?no=${param.no }">뒤로가기</a>
+	
+	<br>
+	
+	<a href="${pageContext.request.contextPath }/main">메인으로 돌악가기</a>
 
 </body>
 </html>

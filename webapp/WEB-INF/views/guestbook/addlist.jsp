@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
@@ -7,8 +7,10 @@
 <head>
 <meta charset="UTF-8">
 <title>My site</title>
-<link href="${pageContext.request.contextPath }/assets/css/mysite.css" rel="stylesheet" type="text/css">
-<link href="${pageContext.request.contextPath }/assets/css/guestbook.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath }/assets/css/mysite.css" rel="stylesheet"
+	type="text/css">
+<link href="${pageContext.request.contextPath }/assets/css/guestbook.css" rel="stylesheet"
+	type="text/css">
 
 </head>
 
@@ -35,7 +37,7 @@
 			<!-- //content-head -->
 
 			<div id="guestbook">
-				<form action="${pageContext.request.contextPath }/gbc" method="post">
+				<form action="${pageContext.request.contextPath }/gbc/add" method="get">
 					<table id="guestAdd">
 						<colgroup>
 							<col style="width: 70px;">
@@ -47,8 +49,8 @@
 							<tr>
 								<td><label class="form-text" for="input-uname">이름</label></td>
 								<td><input id="input-uname" type="text" name="name"></td>
-								<td><label class="form-text" for="input-pass">패스워드</label>	</td>
-								<td><input id="input-pass" type="password" name="pass"></td>
+								<td><label class="form-text" for="input-pass">패스워드</label></td>
+								<td><input id="input-pass" type="password" name="password"></td>
 							</tr>
 							<tr>
 								<td colspan="4"><textarea name="content" cols="72" rows="5"></textarea></td>
@@ -59,8 +61,6 @@
 						</tbody>
 
 					</table>
-					<!-- //guestWrite -->
-					<input type="hidden" name="action" value="add">
 
 				</form>
 
@@ -76,7 +76,7 @@
 							<td>${list.no}</td>
 							<td>${list.name}</td>
 							<td>${list.reg_date}</td>
-							<td><a href="${pageContext.request.contextPath }/gbc?action=deleteForm&no=${list.no}">[삭제]</a></td>
+							<td><a href="${pageContext.request.contextPath }/gbc/dForm?no=${list.no}">[삭제]</a></td>
 						</tr>
 						<tr>
 							<td colspan=4 class="text-left">${list.content}</td>
