@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.javaex.dao.UserDao;
+import com.javaex.service.UserService;
 import com.javaex.vo.UserVo;
 
 @Controller
@@ -20,16 +21,19 @@ public class UserCtrl {
 	@Autowired
 	private UserDao uDao;
 
+	@Autowired
+	private UserService uS;
+
 	// constructors
 
-	// get&set method
+	// get&set methods
 
-	// general method
+	// general methods
 	// joinForm
 	@RequestMapping(value = "/joinForm", method = { RequestMethod.GET, RequestMethod.POST })
 	public String joinForm() {
 
-		System.out.println("[joinForm Ctrl]: joinForm 진입");
+		System.out.println("[Ctrl]: joinForm 진입");
 
 		return "user/joinForm";
 
@@ -40,11 +44,11 @@ public class UserCtrl {
 	@RequestMapping(value = "/join", method = { RequestMethod.GET, RequestMethod.POST })
 	public String join(@ModelAttribute UserVo uVo) {
 
-		System.out.println("[join Ctrl]: join 진입");
+		System.out.println("[Ctrl]: join 진입");
 
-		System.out.println("[join Ctrl]: " + uVo.toString());
+		System.out.println("[Ctrl]: " + uVo.toString());
 
-		int count = uDao.join(uVo);
+		int count = uS.join(uVo);
 
 		return "user/joinOk";
 
@@ -54,7 +58,7 @@ public class UserCtrl {
 	@RequestMapping(value = "/loginForm", method = { RequestMethod.GET, RequestMethod.POST })
 	public String loginForm() {
 
-		System.out.println("[loginForm Ctrl]: loginForm 진입");
+		System.out.println("[Ctrl]: loginForm 진입");
 
 		return "user/loginForm";
 
@@ -65,23 +69,23 @@ public class UserCtrl {
 	@RequestMapping(value = "/login", method = { RequestMethod.GET, RequestMethod.POST })
 	public String login(@ModelAttribute UserVo uVo, HttpSession session) {
 
-		System.out.println("[login Ctrl]: login 진입");
+		System.out.println("[Ctrl]: login 진입");
 
-		System.out.println("[login Ctrl]: " + uVo.toString());
+		System.out.println("[Ctrl]: " + uVo.toString());
 
-		UserVo authUser = uDao.login(uVo);
+		UserVo authUser = uS.login(uVo);
 
 		if (authUser == null) {
 
-			System.out.println("[login Ctrl]: login 실패");
+			System.out.println("[Ctrl]: login 실패");
 
 			return "redirect:/user/loginForm?result=fail";
 
 		} else {
 
-			System.out.println("[login Ctrl]: login 성공");
+			System.out.println("[Ctrl]: login 성공");
 
-			System.out.println("[login Ctrl]: " + authUser.toString());
+			System.out.println("[Ctrl]: " + authUser.toString());
 
 			session.setAttribute("authUser", authUser);
 
@@ -95,7 +99,7 @@ public class UserCtrl {
 	@RequestMapping(value = "/logout", method = { RequestMethod.GET, RequestMethod.POST })
 	public String logout(HttpSession session) {
 
-		System.out.println("[logout Ctrl]: logout 진입");
+		System.out.println("[Ctrl]: logout 진입");
 
 		session.removeAttribute("authUser");
 		session.invalidate();
@@ -108,13 +112,20 @@ public class UserCtrl {
 	@RequestMapping(value = "/modifyForm", method = { RequestMethod.GET, RequestMethod.POST })
 	public String modifyForm(HttpSession session, Model model) {
 
-		System.out.println("[modifyForm Ctrl]: modifyForm 진입");
+		System.out.println("[Ctrl]: modifyForm 진입");
 
 		UserVo authUser = (UserVo) session.getAttribute("authUser");
 
-		authUser = uDao.selectOne(authUser.getNo());
+		authUser = uS.modifyForm(authUser.getNo());
 
-		System.out.println("[modifyForm Ctrl]: " + authUser.toString());
+		/*
+		 * // 선생님코드
+		 * int no = ((UserVo) session.getAttribute("authUser")).getNo();
+		 * 
+		 * UserVo authUser = uS.modifyForm(no);
+		 */
+
+		System.out.println("[Ctrl]: " + authUser.toString());
 
 		model.addAttribute("authVo", authUser);
 
@@ -127,11 +138,11 @@ public class UserCtrl {
 	@RequestMapping(value = "/modify", method = { RequestMethod.GET, RequestMethod.POST })
 	public String moidfy(@ModelAttribute UserVo uVo, HttpSession session) {
 
-		System.out.println("[modify Ctrl]: modify 진입");
+		System.out.println("[Ctrl]: modify 진입");
 
-		uDao.modify(uVo);
+		uS.modify(uVo);
 
-		System.out.println("[modify Ctrl]: " + uVo.toString());
+		System.out.println("[Ctrl]: " + uVo.toString());
 
 		// id = test
 		// password = 1234 → 1111
@@ -140,9 +151,22 @@ public class UserCtrl {
 		// 여기까지의 과정 후 db table상엔 수정내용이 적용 되었지만, 실제 사이트엔 적용 안 됨
 		// ※ 수정한 회원정보를 session에 저장 할 필요가 있어보임
 
-		UserVo authUser = uDao.session(uVo.getNo());
+		UserVo authUser = uS.session(uVo.getNo());
 
 		session.setAttribute("authUser", authUser);
+
+		/*
+		 * // 선생님코드
+		 * UserVo authUser = (UserVo) session.getAttribute("authUser");
+		 * 
+		 * int no = authUser.getNo();
+		 * 
+		 * uVo.setNo(no);
+		 * 
+		 * int count = uS.modify(uVo);
+		 * 
+		 * authUser.setName(uVo.getName());
+		 */
 
 		return "redirect:/main";
 

@@ -26,6 +26,7 @@ public class UserDao {
 		System.out.println("[Dao]: " + uVo.toString());
 
 		return sql.insert("user.join", uVo);
+
 	}
 
 	// login(selectOne)
@@ -40,11 +41,11 @@ public class UserDao {
 	}
 
 	// modifyForm(selectOne)
-	public UserVo selectOne(int no) {
+	public UserVo modifyForm(int no) {
 
-		System.out.println("[Dao]: selectOne(int no) 실행");
+		System.out.println("[Dao]: modifyForm(int no) 실행");
 
-		return sql.selectOne("user.selectOne", no);
+		return sql.selectOne("user.modifyForm", no);
 
 	}
 
