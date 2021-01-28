@@ -122,6 +122,7 @@ public class UserCtrl {
 
 	}
 
+	// mysite/user/modify?password=[]&name=[]&gender=[]
 	// modify
 	@RequestMapping(value = "/modify", method = { RequestMethod.GET, RequestMethod.POST })
 	public String moidfy(@ModelAttribute UserVo uVo, HttpSession session) {
