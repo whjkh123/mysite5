@@ -46,4 +46,12 @@ public class BoardService {
 
 	}
 
+	public int modify(BoardVo bVo) {
+
+		System.out.println("[Board Service]: modify(BoardVo bVo) 연결");
+
+		return bDao.update(bVo);
+
+	}
+
 }

@@ -100,9 +100,24 @@ public class BoardController {
 
 		bVo = bS.read(bVo);
 
+		System.out.println("[Board Ctrl]: " + bVo.toString());
+
 		model.addAttribute("BoardVo", bVo);
 
 		return "board/modifyForm";
+
+	}
+
+	@RequestMapping(value = "/modify", method = { RequestMethod.GET, RequestMethod.POST })
+	public String modify(@ModelAttribute BoardVo bVo) {
+
+		System.out.println("[Board Ctrl]: modify 진입");
+
+		bS.modify(bVo);
+
+		System.out.println("[Board Ctrl]: " + bVo.toString());
+
+		return "redirect:/board/list";
 
 	}
 

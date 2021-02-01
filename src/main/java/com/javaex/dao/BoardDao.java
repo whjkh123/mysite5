@@ -56,4 +56,14 @@ public class BoardDao {
 
 	}
 
+	public int update(BoardVo bVo) {
+
+		System.out.println("[Dao]: update(BoardVo bVo) 실행");
+
+		System.out.println("[Board Dao]: " + bVo.toString());
+
+		return sql.update("board.modify", bVo);
+
+	}
+
 }

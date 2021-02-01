@@ -44,4 +44,10 @@
 		]]>
 	</select>
 
+	<update id="modify" parameterType="BoardVo">
+		<![CDATA[
+			UPDATE board SET title = #{title}, content = #{content} WHERE no = #{no}
+		]]>
+	</update>
+
 </mapper>
