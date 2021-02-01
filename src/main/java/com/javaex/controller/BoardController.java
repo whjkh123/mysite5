@@ -98,7 +98,7 @@ public class BoardController {
 
 		System.out.println("[Board Ctrl]: mForm 진입");
 
-		bVo = bS.read(bVo);
+		bVo = bS.selectModify(bVo);
 
 		System.out.println("[Board Ctrl]: " + bVo.toString());
 

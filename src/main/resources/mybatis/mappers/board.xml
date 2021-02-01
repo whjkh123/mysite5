@@ -29,7 +29,28 @@
 		]]>
 	</delete>
 
+	<update id="hit" parameterType="BoardVo">
+		<![CDATA[
+			UPDATE board SET hit = hit + 1 WHERE no = #{no}
+		]]>
+	</update>
+
 	<select id="read" resultType="BoardVo">
+		<![CDATA[
+			SELECT	u.name,
+					b.hit,
+					b.reg_date,
+					b.title,
+					b.content,
+					b.user_no,
+					b.no
+			FROM	board b, users u
+			WHERE	b.user_no = u.no
+					and b.no = #{no}
+		]]>
+	</select>
+
+	<select id="selectModify" resultType="BoardVo">
 		<![CDATA[
 			SELECT	u.name,
 					b.hit,

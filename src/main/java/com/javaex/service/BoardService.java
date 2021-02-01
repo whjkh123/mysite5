@@ -42,7 +42,19 @@ public class BoardService {
 
 		System.out.println("[Board Service]: read(BoardVo bVo) 연결");
 
+		bDao.hitUpdate(bVo);
+
 		return bDao.selectOne(bVo);
+
+	}
+
+	public BoardVo selectModify(BoardVo bVo) {
+
+		System.out.println("[Board Service]: mForm(BoardVo bVo) 연결");
+
+		bDao.selectModify(bVo);
+
+		return bDao.selectModify(bVo);
 
 	}
 

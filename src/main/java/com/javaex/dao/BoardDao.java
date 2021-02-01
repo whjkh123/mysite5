@@ -46,13 +46,27 @@ public class BoardDao {
 
 	}
 
+	public int hitUpdate(BoardVo bVo) {
+
+		System.out.println("[Dao]: hitUpdate(int no) 실행");
+
+		return sql.update("board.hit", bVo);
+
+	}
+
 	public BoardVo selectOne(BoardVo bVo) {
 
 		System.out.println("[Dao]: selectOne(BoardVo bVo) 실행");
 
-		System.out.println("[Board Dao]: " + bVo.toString());
-
 		return sql.selectOne("board.read", bVo);
+
+	}
+
+	public BoardVo selectModify(BoardVo bVo) {
+
+		System.out.println("[Dao]: mForm(BoardVo bVo) 실행");
+
+		return sql.selectOne("board.selectModify", bVo);
 
 	}
 
