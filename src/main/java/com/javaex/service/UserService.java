@@ -15,7 +15,9 @@ public class UserService {
 	// join
 	public int join(UserVo uVo) {
 
-		System.out.println("[Service]: join(UserVo uVo) 연결");
+		System.out.println("[USER Service]: join(UserVo uVo) 연결");
+
+		System.out.println("[USER Service]: " + uVo.toString());
 
 		return uDao.join(uVo);
 
@@ -24,7 +26,9 @@ public class UserService {
 	// login
 	public UserVo login(UserVo uVo) {
 
-		System.out.println("[Service]: login(UserVo uVo) 연결");
+		System.out.println("[USER Service]: login(UserVo uVo) 연결");
+
+		System.out.println("[USER Service]: " + uVo.toString());
 
 		return uDao.login(uVo);
 
@@ -33,16 +37,18 @@ public class UserService {
 	// modifyForm
 	public UserVo modifyForm(int no) {
 
-		System.out.println("[Service]: modifyForm(int no) 연결");
+		System.out.println("[USER Service]: modifyForm(int no) 연결");
 
 		return uDao.modifyForm(no);
 
 	}
 
-	// modifyForm
+	// modify
 	public int modify(UserVo uVo) {
 
-		System.out.println("[Service]: modify(UserVo uVo) 연결");
+		System.out.println("[USER Service]: modify(UserVo uVo) 연결");
+
+		System.out.println("[USER Service]: " + uVo.toString());
 
 		return uDao.modify(uVo);
 
@@ -51,7 +57,7 @@ public class UserService {
 	// session
 	public UserVo session(int no) {
 
-		System.out.println("[Service]: session(int no) 연결");
+		System.out.println("[USER Service]: session(int no) 연결");
 
 		return uDao.session(no);
 

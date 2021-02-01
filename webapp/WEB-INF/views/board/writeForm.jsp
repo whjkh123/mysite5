@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
@@ -7,8 +7,10 @@
 <head>
 <meta charset="UTF-8">
 <title>My site</title>
-<link href="${pageContext.request.contextPath }/assets/css/mysite.css" rel="stylesheet" type="text/css">
-<link href="${pageContext.request.contextPath }/assets/css/board.css" rel="stylesheet"	type="text/css">
+<link href="${pageContext.request.contextPath }/assets/css/mysite.css" rel="stylesheet"
+	type="text/css">
+<link href="${pageContext.request.contextPath }/assets/css/board.css" rel="stylesheet"
+	type="text/css">
 
 </head>
 
@@ -37,11 +39,11 @@
 
 			<div id="board">
 				<div id="writeForm">
-					<form action="${pageContext.request.contextPath }/board" method="post">
+					<form action="${pageContext.request.contextPath }/board/write" method="get">
 						<!-- 제목 -->
 						<div class="form-group">
-							<label class="form-text" for="txt-title">제목</label>
-							<input type="text" id="txt-title" name="title" value="" placeholder="제목을 입력해 주세요">
+							<label class="form-text" for="txt-title">제목</label> <input type="text" id="txt-title"
+								name="title" value="" placeholder="제목을 입력해 주세요">
 						</div>
 
 						<!-- 내용 -->
@@ -49,10 +51,8 @@
 							<textarea id="txt-content" name="content"></textarea>
 						</div>
 
-						<a id="btn_cancel" href="${pageContext.request.contextPath }/board?action=list">취소</a>
+						<a id="btn_cancel" href="${pageContext.request.contextPath }/board/list">취소</a>
 						<button id="btn_add" type="submit">등록</button>
-
-						<input type="hidden" name="action" value="write">
 
 					</form>
 					<!-- //form -->

@@ -16,7 +16,7 @@ public class GuestService {
 
 	public List<GuestBookVo> addList() {
 
-		System.out.println("[Service]: addList() 연결");
+		System.out.println("[GUEST Service]: addList() 연결");
 
 		return gDao.addList();
 
@@ -24,7 +24,7 @@ public class GuestService {
 
 	public int add(GuestBookVo gVo) {
 
-		System.out.println("[Service]: add(GuestBookV gVo) 연결");
+		System.out.println("[GUEST Service]: add(GuestBookV gVo) 연결");
 
 		return gDao.add(gVo);
 
@@ -32,7 +32,7 @@ public class GuestService {
 
 	public int delete(GuestBookVo gVo) {
 
-		System.out.println("[Service]: add(GuestBookV gVo) 연결");
+		System.out.println("[GUEST Service]: add(GuestBookV gVo) 연결");
 
 		return gDao.delete(gVo);
 

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
@@ -7,8 +7,10 @@
 <head>
 <meta charset="UTF-8">
 <title>My site</title>
-<link href="${pageContext.request.contextPath }/assets/css/mysite.css" rel="stylesheet" type="text/css">
-<link href="${pageContext.request.contextPath }/assets/css/board.css" rel="stylesheet"	type="text/css">
+<link href="${pageContext.request.contextPath }/assets/css/mysite.css" rel="stylesheet"
+	type="text/css">
+<link href="${pageContext.request.contextPath }/assets/css/board.css" rel="stylesheet"
+	type="text/css">
 
 </head>
 
@@ -37,7 +39,7 @@
 
 			<div id="board">
 				<div id="list">
-					<form action="${pageContext.request.contextPath }/board" method="post">
+					<form action="${pageContext.request.contextPath }/board" method="get">
 						<div class="form-group text-right">
 							<input type="text" name="keyword">
 							<button type="submit" id=btn_search>검색</button>
@@ -62,13 +64,13 @@
 								<tr>
 									<td>${bList.no }</td>
 									<td class="text-left"><a
-										href="${pageContext.request.contextPath }/board?action=read&no=${bList.no }">${bList.title }</a></td>
+										href="${pageContext.request.contextPath }/board/read?no=${bList.no }">${bList.title }</a></td>
 									<td>${bList.name }</td>
 									<td>${bList.hit }</td>
 									<td>${bList.reg_date }</td>
 
 									<c:if test="${authUser.no == bList.user_no }">
-										<td><a href="${pageContext.request.contextPath }/board?action=delete&no=${bList.no }">[삭제]</a></td>
+										<td><a href="${pageContext.request.contextPath }/board/remove?no=${bList.no }">[삭제]</a></td>
 									</c:if>
 
 									<td></td>
@@ -97,7 +99,7 @@
 						<div class="clear"></div>
 					</div>
 					<c:if test="${!empty authUser }">
-						<a id="btn_write" href="${pageContext.request.contextPath }/board?action=writeForm">글쓰기</a>
+						<a id="btn_write" href="${pageContext.request.contextPath }/board/wForm">글쓰기</a>
 					</c:if>
 
 				</div>

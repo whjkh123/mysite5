@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+
+	<select id="list" resultType="BoardVo">
+		<![CDATA[
+			SELECT	b.no,
+					b.title,
+					u.name,
+					b.content,
+					b.hit,
+					TO_CHAR(b.reg_date, 'yyyy-mm-dd hh:mi:ss') reg_date,
+					b.user_no
+			FROM	board b, users u
+			WHERE	b.user_no = u.no
+		]]>
+	</select>
+
+	<insert id="write" parameterType="BoardVo">
+		<![CDATA[
+			INSERT INTO board VALUES(seq_board_no.NEXTVAL, #{title}, #{content}, default, sysdate, #{user_no})
+		]]>
+	</insert>
+
+	<delete id="remove" parameterType="BoardVo">
+		<![CDATA[
+			DELETE FROM board WHERE no = #{no}
+		]]>
+	</delete>
+
+	<select id="read" resultType="BoardVo">
+		<![CDATA[
+			SELECT	u.name,
+					b.hit,
+					b.reg_date,
+					b.title,
+					b.content,
+					b.user_no,
+					b.no
+			FROM	board b, users u
+			WHERE	b.user_no = u.no
+					and b.no = #{no}
+		]]>
+	</select>
+
+</mapper>

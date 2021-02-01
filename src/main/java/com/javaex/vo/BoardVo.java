@@ -10,6 +10,10 @@ public class BoardVo {
 	public String reg_date;
 	public int user_no;
 
+	public BoardVo() {
+		super();
+	}
+
 	public BoardVo(int no, String title, String name, String content, int hit, String reg_date, int user_no) {
 		super();
 		this.no = no;

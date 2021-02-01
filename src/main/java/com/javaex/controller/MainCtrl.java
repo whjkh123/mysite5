@@ -10,7 +10,7 @@ public class MainCtrl {
 	@RequestMapping(value = "/main", method = { RequestMethod.GET, RequestMethod.POST })
 	public String index() {
 
-		System.out.println("[Ctrl]: index 진입");
+		System.out.println("[Main Ctrl]: index 진입");
 
 		return "/main/index";
 

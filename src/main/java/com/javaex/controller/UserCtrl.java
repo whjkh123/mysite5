@@ -29,7 +29,7 @@ public class UserCtrl {
 	@RequestMapping(value = "/joinForm", method = { RequestMethod.GET, RequestMethod.POST })
 	public String joinForm() {
 
-		System.out.println("[Ctrl]: joinForm 진입");
+		System.out.println("[USER Ctrl]: joinForm 진입");
 
 		return "user/joinForm";
 
@@ -40,11 +40,11 @@ public class UserCtrl {
 	@RequestMapping(value = "/join", method = { RequestMethod.GET, RequestMethod.POST })
 	public String join(@ModelAttribute UserVo uVo) {
 
-		System.out.println("[Ctrl]: join 진입");
+		System.out.println("[USER Ctrl]: join 진입");
 
-		System.out.println("[Ctrl]: " + uVo.toString());
+		uS.join(uVo);
 
-		int count = uS.join(uVo);
+		System.out.println("[USER Ctrl]: " + uVo.toString());
 
 		return "user/joinOk";
 
@@ -54,7 +54,7 @@ public class UserCtrl {
 	@RequestMapping(value = "/loginForm", method = { RequestMethod.GET, RequestMethod.POST })
 	public String loginForm() {
 
-		System.out.println("[Ctrl]: loginForm 진입");
+		System.out.println("[USER Ctrl]: loginForm 진입");
 
 		return "user/loginForm";
 
@@ -65,23 +65,23 @@ public class UserCtrl {
 	@RequestMapping(value = "/login", method = { RequestMethod.GET, RequestMethod.POST })
 	public String login(@ModelAttribute UserVo uVo, HttpSession session) {
 
-		System.out.println("[Ctrl]: login 진입");
+		System.out.println("[USER Ctrl]: login 진입");
 
-		System.out.println("[Ctrl]: " + uVo.toString());
+		System.out.println("[USER Ctrl]: " + uVo.toString());
 
 		UserVo authUser = uS.login(uVo);
 
 		if (authUser == null) {
 
-			System.out.println("[Ctrl]: login 실패");
+			System.out.println("[USER Ctrl]: login 실패");
 
 			return "redirect:/user/loginForm?result=fail";
 
 		} else {
 
-			System.out.println("[Ctrl]: login 성공");
+			System.out.println("[USER Ctrl]: login 성공");
 
-			System.out.println("[Ctrl]: " + authUser.toString());
+			System.out.println("[USER Ctrl]: " + authUser.toString());
 
 			session.setAttribute("authUser", authUser);
 
@@ -95,7 +95,7 @@ public class UserCtrl {
 	@RequestMapping(value = "/logout", method = { RequestMethod.GET, RequestMethod.POST })
 	public String logout(HttpSession session) {
 
-		System.out.println("[Ctrl]: logout 진입");
+		System.out.println("[USER Ctrl]: logout 진입");
 
 		session.removeAttribute("authUser");
 		session.invalidate();
@@ -108,7 +108,7 @@ public class UserCtrl {
 	@RequestMapping(value = "/modifyForm", method = { RequestMethod.GET, RequestMethod.POST })
 	public String modifyForm(HttpSession session, Model model) {
 
-		System.out.println("[Ctrl]: modifyForm 진입");
+		System.out.println("[USER Ctrl]: modifyForm 진입");
 
 		UserVo authUser = (UserVo) session.getAttribute("authUser");
 
@@ -121,7 +121,7 @@ public class UserCtrl {
 		 * UserVo authUser = uS.modifyForm(no);
 		 */
 
-		System.out.println("[Ctrl]: " + authUser.toString());
+		System.out.println("[USER Ctrl]: " + authUser.toString());
 
 		model.addAttribute("authVo", authUser);
 
@@ -134,11 +134,11 @@ public class UserCtrl {
 	@RequestMapping(value = "/modify", method = { RequestMethod.GET, RequestMethod.POST })
 	public String moidfy(@ModelAttribute UserVo uVo, HttpSession session) {
 
-		System.out.println("[Ctrl]: modify 진입");
+		System.out.println("[USER Ctrl]: modify 진입");
 
 		uS.modify(uVo);
 
-		System.out.println("[Ctrl]: " + uVo.toString());
+		System.out.println("[USER Ctrl]: " + uVo.toString());
 
 		// id = test
 		// password = 1234 → 1111
@@ -152,8 +152,7 @@ public class UserCtrl {
 		session.setAttribute("authUser", authUser);
 
 		/*
-		 * // 선생님코드
-		 * UserVo authUser = (UserVo) session.getAttribute("authUser");
+		 * // 선생님코드 UserVo authUser = (UserVo) session.getAttribute("authUser");
 		 * 
 		 * int no = authUser.getNo();
 		 * 

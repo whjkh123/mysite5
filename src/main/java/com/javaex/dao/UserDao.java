@@ -21,9 +21,9 @@ public class UserDao {
 	// join(insert)
 	public int join(UserVo uVo) {
 
-		System.out.println("[Dao]: join(UserVo uVo) 실행");
+		System.out.println("[USER Dao]: join(UserVo uVo) 실행");
 
-		System.out.println("[Dao]: " + uVo.toString());
+		System.out.println("[USER Dao]: " + uVo.toString());
 
 		return sql.insert("user.join", uVo);
 
@@ -32,9 +32,9 @@ public class UserDao {
 	// login(selectOne)
 	public UserVo login(UserVo uVo) {
 
-		System.out.println("[Dao]: login(UserVo uVo) 실행");
+		System.out.println("[USER Dao]: login(UserVo uVo) 실행");
 
-		System.out.println("[Dao]: " + uVo.toString());
+		System.out.println("[USER Dao]: " + uVo.toString());
 
 		return sql.selectOne("user.login", uVo);
 
@@ -43,7 +43,7 @@ public class UserDao {
 	// modifyForm(selectOne)
 	public UserVo modifyForm(int no) {
 
-		System.out.println("[Dao]: modifyForm(int no) 실행");
+		System.out.println("[USER Dao]: modifyForm(int no) 실행");
 
 		return sql.selectOne("user.modifyForm", no);
 
@@ -52,9 +52,9 @@ public class UserDao {
 	// modify(update)
 	public int modify(UserVo uVo) {
 
-		System.out.println("[Dao]: modify(UserVo uVo) 실행");
+		System.out.println("[USER Dao]: modify(UserVo uVo) 실행");
 
-		System.out.println("[Dao]: " + uVo.toString());
+		System.out.println("[USER Dao]: " + uVo.toString());
 
 		return sql.update("user.modify", uVo);
 
@@ -63,7 +63,7 @@ public class UserDao {
 	// modify(update) → session
 	public UserVo session(int no) {
 
-		System.out.println("[Dao]: session(int no) 실행");
+		System.out.println("[USER Dao]: session(int no) 실행");
 
 		return sql.selectOne("user.session", no);
 

@@ -29,9 +29,11 @@ public class GuestBookController {
 	@RequestMapping(value = "/addList", method = { RequestMethod.GET, RequestMethod.POST })
 	public String addList(Model model) {
 
-		System.out.println("[Ctrl]: addList 진입");
+		System.out.println("[Guest Ctrl]: addList 진입");
 
 		List<GuestBookVo> gList = gS.addList();
+
+		System.out.println("[Board Ctrl]: " + gList.toString());
 
 		model.addAttribute("GuestList", gList);
 
@@ -44,9 +46,9 @@ public class GuestBookController {
 	@RequestMapping(value = "/add", method = { RequestMethod.GET, RequestMethod.POST })
 	public String add(@ModelAttribute GuestBookVo gVo) {
 
-		System.out.println("[Ctrl]: add 진입");
+		System.out.println("[Guest Ctrl]: add 진입");
 
-		System.out.println("[Ctrl]: " + gVo.toString());
+		System.out.println("[Guest Ctrl]: " + gVo.toString());
 
 		gS.add(gVo);
 
@@ -58,7 +60,7 @@ public class GuestBookController {
 	@RequestMapping(value = "/dForm", method = { RequestMethod.GET, RequestMethod.POST })
 	public String dForm() {
 
-		System.out.println("[Ctrl]: dForm 진입");
+		System.out.println("[Guest Ctrl]: dForm 진입");
 
 		return "guestbook/deleteForm";
 
@@ -69,14 +71,14 @@ public class GuestBookController {
 	@RequestMapping(value = "/delete", method = { RequestMethod.GET, RequestMethod.POST })
 	public String delete(@ModelAttribute GuestBookVo gVo) {
 
-		System.out.println("[Ctrl]: delete 진입");
+		System.out.println("[Guest Ctrl]: delete 진입");
 
 		int count = gS.delete(gVo);
 
 		if (count == 1) {
 			return "redirect:/gbc/addList";
 		} else {
-			System.out.println("[Ctrl]: password 오류");
+			System.out.println("[Guest Ctrl]: password 오류");
 			return "guestbook/pswError";
 		}
 

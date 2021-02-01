@@ -37,7 +37,7 @@
 
 			<div id="board">
 				<div id="read">
-					<form action="${pageContext.request.contextPath }/board" method="post">
+					<form action="${pageContext.request.contextPath }/board" method="get">
 						<!-- 작성자 -->
 						<div class="form-group">
 							<span class="form-text">작성자</span>
@@ -69,12 +69,12 @@
 
 						<c:choose>
 							<c:when test="${authUser.no == BoardVo.user_no }">
-								<a id="btn_modify" href="${pageContext.request.contextPath }/board?action=list">목록</a>
-								<a id="btn_modify" href="${pageContext.request.contextPath }/board?action=modifyForm&no=${BoardVo.no }">수정</a>
+								<a id="btn_modify" href="${pageContext.request.contextPath }/board/list">목록</a>
+								<a id="btn_modify" href="${pageContext.request.contextPath }/board/mForm?no=${BoardVo.no }">수정</a>
 							</c:when>
 
 							<c:otherwise>
-								<a id="btn_modify" href="${pageContext.request.contextPath }/board?action=list">목록</a>
+								<a id="btn_modify" href="${pageContext.request.contextPath }/board/list">목록</a>
 							</c:otherwise>
 						</c:choose>
 
