@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cmtboard">
+
+	<select id="list" resultType="CmtBoardVo">
+		<![CDATA[
+			SELECT  rb.no,
+			        rb.user_no,
+			        rb.title,
+			        rb.content,
+			        rb.hit,
+			        TO_CHAR(rb.reg_date, 'yyyy-mm-dd hh:mi:ss') reg_date,
+			        rb.group_no,
+			        rb.order_no,
+			        rb.depth
+			FROM    rboard rb, users u
+			WHERE	rb.user_no = u.no
+			ORDER BY group_no desc, order_no asc
+		]]>
+	</select>
+
+	<update id="orderupdate" parameterType="CmtBoardVo">
+		<![CDATA[
+			UPDATE rboard SET order_no = order_no + 1 WHERE group_no = #{group_no} and #{order_no} >= #{order_no{
+		]]>
+	</update>
+
+	<insert id="cmtInsert" parameterType="CmtBoardVo">
+		<![CDATA[
+			INSERT INTO rboard VALUES (seq_rboard_no.NEXTVAL, #{user_no}, #{title}, #{content}, dafault, sysdate, #{group_no}, #{order_no}, #{depth})
+		]]>
+	</insert>
+
+	<insert id="write" parameterType="CmtBoardVo">
+		<![CDATA[
+			INSERT INTO rboard VALUES(seq_rboard_no.NEXTVAL, #{user_no}, #{title}, #{content}, default, sysdate, seq_rboard_no.CURRVAL, 1, 0)
+		]]>
+	</insert>
+
+	<update id="hit" parameterType="CmtBoardVo">
+		<![CDATA[
+			UPDATE rboard SET hit = hit + 1 WHERE no = #{no}
+		]]>
+	</update>
+
+	<select id="read" resultType="CmtBoardVo">
+		<![CDATA[
+			SELECT  u.name,
+					rb.no,
+			        rb.user_no,
+			        rb.title,
+			        rb.content,
+			        rb.hit,
+			        TO_CHAR(rb.reg_date, 'yyyy-mm-dd hh:mi:ss') reg_date,
+			        rb.group_no,
+			        rb.order_no,
+			        rb.depth
+			FROM    rboard rb, users u
+			WHERE	rb.user_no = u.no
+					and rb.no = #{no}
+			ORDER BY group_no desc, order_no asc
+		]]>
+	</select>
+
+	<select id="cmtwForm" resultType="CmtBoardVo">
+		<![CDATA[
+				SELECT  u.name,
+						rb.no,
+				        rb.user_no,
+				        rb.title,
+				        rb.content,
+				        rb.hit,
+				        TO_CHAR(rb.reg_date, 'yyyy-mm-dd hh:mi:ss') reg_date,
+				        rb.group_no,
+				        rb.order_no,
+				        rb.depth
+				FROM    rboard rb, users u
+				WHERE	rb.user_no = u.no
+						and rb.no = #{no}
+				ORDER BY group_no desc, order_no asc
+			]]>
+	</select>
+
+</mapper>

@@ -14,6 +14,7 @@
 					b.user_no
 			FROM	board b, users u
 			WHERE	b.user_no = u.no
+			ORDER BY b.no desc
 		]]>
 	</select>
 

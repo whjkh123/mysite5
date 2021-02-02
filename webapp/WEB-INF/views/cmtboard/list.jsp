@@ -25,12 +25,12 @@
 		<div id="content">
 
 			<div id="content-head">
-				<h3>일반게시판</h3>
+				<h3>댓글게시판</h3>
 				<div id="location">
 					<ul>
 						<li>홈</li>
 						<li>게시판</li>
-						<li class="last">일반게시판</li>
+						<li class="last">댓글게시판</li>
 					</ul>
 				</div>
 				<div class="clear"></div>
@@ -39,7 +39,7 @@
 
 			<div id="board">
 				<div id="list">
-					<form action="${pageContext.request.contextPath }/board" method="get">
+					<form action="${pageContext.request.contextPath }/cmtboard" method="get">
 						<div class="form-group text-right">
 							<input type="text" name="keyword">
 							<button type="submit" id=btn_search>검색</button>
@@ -55,22 +55,33 @@
 								<th>글쓴이</th>
 								<th>조회수</th>
 								<th>작성일</th>
+								<th>group_no</th>
+								<th>order_no</th>
+								<th>depth</th>
 								<th>관리</th>
 							</tr>
 						</thead>
 						<tbody>
 
-							<c:forEach items="${requestScope.BoardList }" var="bList">
+							<c:forEach items="${requestScope.CmtBoardList }" var="cbList">
 								<tr>
-									<td>${bList.no }</td>
+									<td>${cbList.no }</td>
 									<td class="text-left"><a
-										href="${pageContext.request.contextPath }/board/read?no=${bList.no }">${bList.title }</a></td>
-									<td>${bList.name }</td>
-									<td>${bList.hit }</td>
-									<td>${bList.reg_date }</td>
+										href="${pageContext.request.contextPath }/cmtboard/read?no=${cbList.no }"> <c:forEach
+												var="item" begin="1" end="${cbList.depth}" step="1">
+												<!-- &nbsp; 공백표시를 해줌. -->
+												&nbsp;&nbsp;&nbsp;
+										</c:forEach> ${cbList.title }
+									</a></td>
+									<td>${cbList.name }</td>
+									<td>${cbList.hit }</td>
+									<td>${cbList.reg_date }</td>
+									<td>${cbList.group_no }</td>
+									<td>${cbList.order_no }</td>
+									<td>${cbList.depth }</td>
 
-									<c:if test="${authUser.no == bList.user_no }">
-										<td><a href="${pageContext.request.contextPath }/board/remove?no=${bList.no }">[삭제]</a></td>
+									<c:if test="${authUser.no == cbList.user_no }">
+										<td><a href="${pageContext.request.contextPath }/cmtboard/remove?no=${cbList.no }">[삭제]</a></td>
 									</c:if>
 
 									<td></td>
@@ -99,7 +110,7 @@
 						<div class="clear"></div>
 					</div>
 					<c:if test="${!empty authUser }">
-						<a id="btn_write" href="${pageContext.request.contextPath }/board/wForm">글쓰기</a>
+						<a id="btn_write" href="${pageContext.request.contextPath }/cmtboard/wForm">글쓰기</a>
 					</c:if>
 
 				</div>
