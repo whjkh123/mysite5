@@ -52,27 +52,19 @@ public class CmtBoardDao {
 
 	}
 
-	public int hitUpdate(CmtBoardVo cbVo) {
+	public int hitUpdate(int no) {
 
 		System.out.println("[CmtBoard Dao]: hitUpdate(CmtBoardVo cbVo) 실행");
 
-		return sql.update("cmtboard.hit", cbVo);
+		return sql.update("cmtboard.hit", no);
 
 	}
 
-	public CmtBoardVo selectOne(CmtBoardVo cbVo) {
+	public CmtBoardVo selectOne(int no) {
 
 		System.out.println("[CmtBoard Dao]: selectOne(CmtBoardVo cbVo) 실행");
 
-		return sql.selectOne("cmtboard.read", cbVo);
-
-	}
-
-	public CmtBoardVo selectBoard(CmtBoardVo cbVo) {
-
-		System.out.println("[CmtBoard Dao]: selectBoard(CmtBoardVo cbVo) 실행");
-
-		return sql.selectOne("cmtboard.cmtwForm", cbVo);
+		return sql.selectOne("cmtboard.read", no);
 
 	}
 

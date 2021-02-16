@@ -20,9 +20,9 @@
 		]]>
 	</select>
 
-	<update id="orderupdate" parameterType="CmtBoardVo">
+	<update id="orderUpdate" parameterType="CmtBoardVo">
 		<![CDATA[
-			UPDATE rboard SET order_no = order_no + 1 WHERE group_no = #{group_no} and #{order_no} >= #{order_no{
+			UPDATE rboard SET order_no = order_no + 1 WHERE group_no = #{group_no} and #{order_no} >= #{order_no}
 		]]>
 	</update>
 
@@ -44,12 +44,12 @@
 		]]>
 	</update>
 
-	<select id="read" resultType="CmtBoardVo">
+	<select id="read" parameterType="int" resultType="CmtBoardVo">
 		<![CDATA[
-			SELECT  u.name,
-					rb.no,
+			SELECT  rb.no,
 			        rb.user_no,
 			        rb.title,
+			        u.name,
 			        rb.content,
 			        rb.hit,
 			        TO_CHAR(rb.reg_date, 'yyyy-mm-dd hh:mi:ss') reg_date,
@@ -61,25 +61,6 @@
 					and rb.no = #{no}
 			ORDER BY group_no desc, order_no asc
 		]]>
-	</select>
-
-	<select id="cmtwForm" resultType="CmtBoardVo">
-		<![CDATA[
-				SELECT  u.name,
-						rb.no,
-				        rb.user_no,
-				        rb.title,
-				        rb.content,
-				        rb.hit,
-				        TO_CHAR(rb.reg_date, 'yyyy-mm-dd hh:mi:ss') reg_date,
-				        rb.group_no,
-				        rb.order_no,
-				        rb.depth
-				FROM    rboard rb, users u
-				WHERE	rb.user_no = u.no
-						and rb.no = #{no}
-				ORDER BY group_no desc, order_no asc
-			]]>
 	</select>
 
 </mapper>

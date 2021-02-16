@@ -51,7 +51,12 @@
 							<textarea id="txt-content" name="content"></textarea>
 						</div>
 
+						<input type="text" name="group_no" value="${CmtBoardVo.group_no }">
+						<input type="text" name="order_no" value="${CmtBoardVo.order_no }">
+						<input type="text" name="depth"	value="${CmtBoardVo.depth }">
+						
 						<a id="btn_cancel" href="${pageContext.request.contextPath }/cmtboard/list">취소</a>
+						
 						<button id="btn_add" type="submit">등록</button>
 
 					</form>

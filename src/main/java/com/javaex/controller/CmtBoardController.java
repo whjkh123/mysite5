@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.javaex.service.CmtBoardService;
 import com.javaex.vo.CmtBoardVo;
@@ -51,12 +52,9 @@ public class CmtBoardController {
 
 		System.out.println("[CmtBoard Ctrl]: write 진입");
 
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
+		UserVo userVo = (UserVo) session.getAttribute("authUser");
 
-		int user_no = authUser.getNo();
-
-		cbVo.setUser_no(user_no);
-
+		cbVo.setUser_no(userVo.getNo());
 		cbS.write(cbVo);
 
 		System.out.println("[CmtBoard Ctrl]: " + cbVo.toString());
@@ -66,11 +64,11 @@ public class CmtBoardController {
 	}
 
 	@RequestMapping(value = "/read", method = { RequestMethod.GET, RequestMethod.POST })
-	public String read(@ModelAttribute CmtBoardVo cbVo, Model model) {
+	public String read(@RequestParam("no") int no, Model model) {
 
 		System.out.println("[CmtBoard Ctrl]: read 진입");
 
-		cbVo = cbS.read(cbVo);
+		CmtBoardVo cbVo = cbS.read(no);
 
 		System.out.println("[CmtBoard Ctrl]: " + cbVo.toString());
 
@@ -81,15 +79,15 @@ public class CmtBoardController {
 	}
 
 	@RequestMapping(value = "/cmtwForm", method = { RequestMethod.GET, RequestMethod.POST })
-	public String cmtwForm(@ModelAttribute CmtBoardVo cbVo, Model model) {
+	public String cmtwForm(@RequestParam("group_no") int group_no, Model model) {
 
 		System.out.println("[CmtBoard Ctrl]: cmtwForm 진입");
 
-		cbVo = cbS.cmtwForm(cbVo);
+		CmtBoardVo cbVo = cbS.cmtwForm(group_no);
 
 		model.addAttribute("CmtBoardVo", cbVo);
 
-		return "/cmtboard/wForm";
+		return "/cmtboard/writeForm";
 
 	}
 

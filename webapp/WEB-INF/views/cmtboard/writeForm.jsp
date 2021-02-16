@@ -42,14 +42,26 @@
 					<form action="${pageContext.request.contextPath }/cmtboard/write" method="get">
 						<!-- 제목 -->
 						<div class="form-group">
-							<label class="form-text" for="txt-title">제목</label>
-							<input type="text" id="txt-title" name="title" value="" placeholder="제목을 입력해 주세요">
+							<label class="form-text" for="txt-title">제목</label> <input type="text" id="txt-title"
+								name="title" value="" placeholder="제목을 입력해 주세요">
 						</div>
 
 						<!-- 내용 -->
 						<div class="form-group">
 							<textarea id="txt-content" name="content"></textarea>
 						</div>
+
+						<c:choose>
+							<c:when test="${CmtBoardVo != null}">
+								<input type="text" name="no" value="${CmtBoardVo.no}">
+								<input type="text" name="group_no" value="${CmtBoardVo.group_no}">
+								<input type="text" name="order_no" value="${CmtBoardVo.order_no}">
+								<input type="text" name="depth" value="${CmtBoardVo.depth}">
+							</c:when>
+							<c:otherwise>
+								<input type="text" name="group_no" value="0">
+							</c:otherwise>
+						</c:choose>
 
 						<a id="btn_cancel" href="${pageContext.request.contextPath }/cmtboard/list">취소</a>
 						<button id="btn_add" type="submit">등록</button>

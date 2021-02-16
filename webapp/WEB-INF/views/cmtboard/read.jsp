@@ -65,19 +65,17 @@
 							<span class="form-value">${CmtBoardVo.content }</span>
 						</div>
 
-						<c:choose>
-							<c:when test="${authUser.no == CmtBoardVo.user_no }">
-								<a id="btn_modify" href="${pageContext.request.contextPath }/cmtboard/list">목록</a>
-								<a id="btn_modify"
-									href="${pageContext.request.contextPath }/cmtboard/mForm?no=${CmtBoardVo.no }">수정</a>
-							</c:when>
+						<c:if test="${sessionScope.authUser.no == CmtBoardVo.user_no } ">
+							<a id="btn_modify"
+								href="${pageContext.request.contextPath}/cmtboard/modifyForm?no=${CmtBoardVo.no}">수정</a>
+						</c:if>
 
-							<c:otherwise>
-								<a id="btn_modify" href="${pageContext.request.contextPath }/cmtboard/list">목록</a>
-								<a id="btn_modify"
-									href="${pageContext.request.contextPath }/cmtboard/cmtwForm?group_no=${CmtBoardVo.no }">댓글달기</a>
-							</c:otherwise>
-						</c:choose>
+						<c:if test="${sessionScope.authUser.no != null } ">
+							<a id="btn_modify"
+								href="${pageContext.request.contextPath }/cmtboard/cmtwForm?group_no=${CmtBoardVo.no }">댓글달기</a>
+						</c:if>
+
+						<a id="btn_modify" href="${pageContext.request.contextPath }/cmtboard/list">목록</a>
 
 					</form>
 					<!-- //form -->

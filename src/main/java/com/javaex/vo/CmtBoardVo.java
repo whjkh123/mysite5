@@ -17,8 +17,8 @@ public class CmtBoardVo {
 		super();
 	}
 
-	public CmtBoardVo(int no, int user_no, String title, String content, int hit, String reg_date, int group_no,
-			int order_no, int depth, String name) {
+	public CmtBoardVo(int no, int user_no, String title, String name, String content, int hit, String reg_date,
+			int group_no, int order_no, int depth) {
 		super();
 		this.no = no;
 		this.user_no = user_no;
