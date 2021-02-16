@@ -63,4 +63,26 @@ public class UserService {
 
 	}
 
+	// idcheck
+	public String idcheck(String id) {
+
+		System.out.println("[USER Service]: idcheck(String id) 연결");
+
+		UserVo uVo = uDao.selectOne(id);
+
+		String result = "";
+
+		if (uVo == null) {
+			// 회원가입 가능
+			result = "can";
+		} else {
+			// 회원가입 불가능
+			result = "cant";
+			System.out.println("[USER Service]: " + uVo.toString());
+		}
+
+		return result;
+
+	}
+
 }

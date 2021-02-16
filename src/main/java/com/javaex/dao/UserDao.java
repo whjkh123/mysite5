@@ -69,4 +69,12 @@ public class UserDao {
 
 	}
 
+	public UserVo selectOne(String id) {
+
+		System.out.println("[USER Dao]: selectOne(String id) 실행");
+
+		return sql.selectOne("user.selectById", id);
+
+	}
+
 }

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
@@ -6,6 +6,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
+
+<script type="text/javascript" src="${pageContext.request.contextPath }/assets/js/jquery/jquery-1.12.4.js"></script>
+
 <title>My site</title>
 <link href="${pageContext.request.contextPath }/assets/css/mysite.css" rel="stylesheet" type="text/css">
 <link href="${pageContext.request.contextPath }/assets/css/user.css" rel="stylesheet" type="text/css">
@@ -35,42 +38,40 @@
 			<!-- //content-head -->
 
 			<div id="user">
-				<div id="joinForm">
-					<form action="${pageContext.request.contextPath }/user/join" method="get">
+				<div>
+					<form id="joinForm" action="${pageContext.request.contextPath }/user/join" method="get">
 
 						<!-- 아이디 -->
 						<div class="form-group">
-							<label class="form-text" for="input-uid">아이디</label>
-							<input type="text" id="input-uid" name="id" value="" placeholder="아이디를 입력하세요">
-							<button type="button" id="">중복체크</button>
+							<label class="form-text" for="input-uid">아이디</label> <input type="text" id="input-uid" name="id" value="" placeholder="아이디를 입력하세요">
+							<button type="button" id="btnChk">중복체크</button>
 						</div>
+
+						<p id="sys">
+							<!-- 아이디 사용가능 여부 -->
+						</p>
 
 						<!-- 비밀번호 -->
 						<div class="form-group">
-							<label class="form-text" for="input-pass">패스워드</label>
-							<input type="password" id="input-pass" name="password" value="" placeholder="비밀번호를 입력하세요">
+							<label class="form-text" for="input-pass">패스워드</label> <input type="password" id="input-pass" name="password" value=""
+								placeholder="비밀번호를 입력하세요">
 						</div>
 
 						<!-- 이메일 -->
 						<div class="form-group">
-							<label class="form-text" for="input-name">이름</label>
-							<input type="text" id="input-name" name="name" value="" placeholder="이름을 입력하세요">
+							<label class="form-text" for="input-name">이름</label> <input type="text" id="input-name" name="name" value="" placeholder="이름을 입력하세요">
 						</div>
 
 						<!-- //나이 -->
 						<div class="form-group">
-							<span class="form-text">성별</span>
-							<label for="rdo-male">남</label>
-							<input type="radio" id="rdo-male" name="gender" value="male">
-							<label for="rdo-female">여</label>
-							<input type="radio" id="rdo-female" name="gender" value="female">
+							<span class="form-text">성별</span> <label for="rdo-male">남</label> <input type="radio" id="rdo-male" name="gender" value="male"> <label
+								for="rdo-female">여</label> <input type="radio" id="rdo-female" name="gender" value="female">
 						</div>
 
 						<!-- 약관동의 -->
 						<div class="form-group">
-							<span class="form-text">약관동의</span>
-							<input type="checkbox" id="chk-agree" value="" name="">
-							<label for="chk-agree">서비스	약관에 동의합니다.</label>
+							<span class="form-text">약관동의</span> <input type="checkbox" id="chk-agree" value="" name=""> <label for="chk-agree">서비스 약관에
+								동의합니다.</label>
 						</div>
 
 						<!-- 버튼영역 -->
@@ -93,5 +94,67 @@
 	<!-- //wrap -->
 
 </body>
+
+<script type="text/javascript">
+	$("#btnChk").on("click", function() {
+		/* console.log("중복체크버튼 클릭") */
+
+		var uId = $("#input-uid").val()// var uId = $("[name['id']]").val()
+		var uPw = $("#input-pass").val()
+		console.log(uId + ", " + uPw)
+
+		// ajax >> 데이터만 수신
+		$.ajax({
+			url : "${pageContext.request.contextPath }/user/idChk",
+			type : "post",
+			// contentType : "application/json",
+			data : {
+				id : uId,
+				password : uPw
+			},
+
+			dataType : "text",
+			success : function(result) {
+				/*성공시 처리해야될 코드 작성*/
+
+				if (result == 'can') {
+					console.log(result)
+					$("#sys").html("<font color='red'>사용할 수 있는 아이디</font>")
+				} else {
+					console.log(result)
+					$("#sys").html("<font color='red'>사용할 수 없는 아이디</font>")
+				}
+			},
+			error : function(XHR, status, error) {
+				console.error(status + " : " + error);
+			}
+		});
+	})
+
+	//Form을 submit 하기 전
+	$("#joinForm").on("submit", function() {
+		var chk = $("#chk-agree").is(":checked")
+		console.log(chk)
+
+		var uPw = $("#input-pass").val()
+		console.log(uPw.length)
+
+		//패스워드 8글자 이상이어야 가능
+		if (uPw.length < 8) {
+			// 설정 불가능 >> alert "비밀번호는 8글자 이상으로 해주세요." 팝업
+			alert("비밀번호는 8글자 이상으로 해주세요.")
+			return false
+		}
+		// 약관동의 여부 확인
+		if (!chk) {
+			// 이용약관에 체크를 안 하면..
+			alert("이용약관에 동의해주세요.")
+			return false
+		}
+
+		return true
+
+	})
+</script>
 
 </html>

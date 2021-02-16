@@ -59,4 +59,17 @@
 	]]>
 	</select>
 
+	<!-- idcheck -->
+	<select id="selectById" parameterType="String" resultType="UserVo">
+		<![CDATA[
+			SELECT	no,
+					id,
+					password,
+					name,
+					gender
+			FROM	users
+			WHERE	id = #{id}
+		]]>
+	</select>
+
 </mapper>

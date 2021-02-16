@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.javaex.service.UserService;
 import com.javaex.vo.UserVo;
@@ -115,8 +117,7 @@ public class UserCtrl {
 		authUser = uS.modifyForm(authUser.getNo());
 
 		/*
-		 * // 선생님코드
-		 * int no = ((UserVo) session.getAttribute("authUser")).getNo();
+		 * // 선생님코드 int no = ((UserVo) session.getAttribute("authUser")).getNo();
 		 * 
 		 * UserVo authUser = uS.modifyForm(no);
 		 */
@@ -164,6 +165,23 @@ public class UserCtrl {
 		 */
 
 		return "redirect:/main";
+
+	}
+
+	// idcheck
+	@ResponseBody
+	@RequestMapping(value = "/idChk", method = { RequestMethod.GET, RequestMethod.POST })
+	public String idcheck(@RequestParam("id") String id, @RequestParam("password") String password) {
+
+		System.out.println("[USER Ctrl]: " + id + " idcheck 진입");
+		System.out.println("[USER Ctrl]: " + password + " idcheck 진입");
+
+		String result = uS.idcheck(id);
+
+		System.out.println(result);
+
+		// return "redirect:/user/joinForm?result=" + result;
+		return result;// @ResponseBody >> 요청 한 body영역에 return데이터만 송신
 
 	}
 
