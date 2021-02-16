@@ -38,4 +38,21 @@ public class GuestService {
 
 	}
 
+	// ajax 방문록 등록
+	public GuestBookVo writeResultVo(GuestBookVo gVo) {
+
+		System.out.println("[GUEST Service]: writeResultVo(GuestBookVo gVo) 연결");
+		System.out.println("[GUEST Service]: gDao.insertSelectKey(gVo) 실행 전 " + gVo);
+
+		// int no = gDao.insertSelectKey(gVo);
+		// 방문록 저장 → 저장 된 글 조회
+		gDao.insertSelectKey(gVo);
+		System.out.println("[GUEST Service]: gDao.insertSelectKey(gVo) 실행 후 " + gVo);
+		int no = gVo.getNo();
+
+		// 글 1개 조회
+		return gDao.selectOne(no);
+
+	}
+
 }

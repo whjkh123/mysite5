@@ -49,4 +49,25 @@ public class GuestBookDao {
 
 	}
 
+	// ajax 방문록 등록
+	public void insertSelectKey(GuestBookVo gVo) {
+
+		System.out.println("[GUEST Dao]: insertSelectKey(GuestBookVo gVo) 실행");
+
+		System.out.println("[GUEST Dao]: xml 실행 전 " + gVo);
+
+		sql.insert("guestbook.insertSelectKey", gVo);
+
+		System.out.println("[GUEST Dao]: xml 실행 후 " + gVo);
+
+	}
+
+	// ajax 글 1개 조회
+	public GuestBookVo selectOne(int no) {
+
+		System.out.println("[GUEST Dao]: selectOne(GuestBookVo gVo) 실행");
+
+		return sql.selectOne("guestbook.select", no);
+	}
+
 }

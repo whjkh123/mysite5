@@ -12,7 +12,7 @@
 				   content,
 				   TO_CHAR(reg_date, 'yyyy-mm-dd hh:mi:ss') reg_date
 			FROM   guestbook
-			ORDER BY no asc
+			ORDER BY no desc
 		]]>
 	</select>
 
@@ -29,5 +29,30 @@
 		DELETE FROM guestbook WHERE no = #{no} and password = #{password}
 	]]>
 	</delete>
+
+	<!-- ajax 등록 -->
+	<insert id="insertSelectKey" parameterType="GuestBookVo">
+		<selectKey keyProperty="no" resultType="int" order="BEFORE">
+			SELECT seq_no.nextval
+			FROM dual
+		</selectKey>
+		
+		<![CDATA[
+			INSERT INTO guestbook VALUES(seq_no.currval, #{name}, #{password}, #{content}, sysdate)
+		]]>
+	</insert>
+
+	<!-- ajax 글 1개 조회 -->
+	<select id="select" parameterType="int" resultType="GuestBookVo">
+		<![CDATA[
+			SELECT	no,
+					name,
+					password,
+					content,
+					TO_CHAR(reg_date, 'yyyy-mm-dd hh:mi:ss') reg_date
+			FROM	guestbook
+			WHERE	no = #{no}
+		]]>
+	</select>
 
 </mapper>
