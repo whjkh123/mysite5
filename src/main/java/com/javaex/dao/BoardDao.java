@@ -1,6 +1,8 @@
 package com.javaex.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,33 @@ public class BoardDao {
 		System.out.println("[Board Dao]: " + bList.toString());
 
 		return bList;
+
+	}
+
+	public List<BoardVo> selectList2(String keyword) {
+
+		System.out.println("[Board Dao]: selectList2() 실행");
+
+		System.out.println("[Board Dao]: " + keyword + "(keyword)");
+
+		return sql.selectList("board.list2", keyword);
+
+	}
+
+	public List<BoardVo> selectList3(String keyword, int startNum, int endNum) {
+
+		System.out.println("[Board Dao]: selectList3() 실행");
+
+		System.out.println("[Board Dao]: " + keyword + "(keyword)");
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("keyword", keyword);
+		map.put("startNum", startNum);
+		map.put("endNum", endNum);
+
+		System.out.println("[Board Dao]: " + map);
+
+		return sql.selectList("board.list3", map);
 
 	}
 
@@ -77,6 +106,14 @@ public class BoardDao {
 		System.out.println("[Board Dao]: " + bVo.toString());
 
 		return sql.update("board.modify", bVo);
+
+	}
+
+	public int selectTotalCnt(String keyword) {
+
+		System.out.println("[Dao]: selectTotalCnt(String keyword) 실행");
+
+		return sql.selectOne("board.selectTotalCnt", keyword);
 
 	}
 

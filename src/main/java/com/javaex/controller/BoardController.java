@@ -1,6 +1,7 @@
 package com.javaex.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.javaex.service.BoardService;
 import com.javaex.vo.BoardVo;
@@ -34,6 +36,42 @@ public class BoardController {
 		model.addAttribute("BoardList", bList);
 
 		return "board/list";
+
+	}
+
+	@RequestMapping(value = "/list2", method = { RequestMethod.GET, RequestMethod.POST })
+	public String list2(@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
+			Model model) {
+
+		System.out.println("[Board Ctrl]: list2 진입");
+
+		System.out.println("[Board Ctrl]: " + keyword + "(keyword)");
+
+		List<BoardVo> bList = bS.list2(keyword);
+
+		model.addAttribute("BoardList", bList);
+
+		return "board/list2";
+
+	}
+
+	@RequestMapping(value = "/list3", method = { RequestMethod.GET, RequestMethod.POST })
+	public String list3(@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
+			@RequestParam(value = "crtPage", required = false, defaultValue = "1") int crtPage, Model model) {
+
+		System.out.println("[Board Ctrl]: list3 진입");
+
+		System.out.println("[Board Ctrl]: " + keyword + "(keyword)");
+
+		System.out.println("[Board Ctrl]: " + crtPage + "(crtPage)");
+
+		Map<String, Object> pMap = bS.list3(keyword, crtPage);
+
+		System.out.println("[Board Ctrl]: " + pMap);
+
+		model.addAttribute("pMap", pMap);
+
+		return "board/list3";
 
 	}
 

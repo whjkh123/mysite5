@@ -18,6 +18,61 @@
 		]]>
 	</select>
 
+	<select id="list2" parameterType="String" resultType="BoardVo">
+		<![CDATA[
+			SELECT	b.no,
+					b.title,
+					u.name,
+					b.content,
+					b.hit,
+					TO_CHAR(b.reg_date, 'yyyy-mm-dd hh:mi:ss') reg_date,
+					b.user_no
+			FROM	board b, users u
+			WHERE	b.user_no = u.no
+		]]>
+		<if test="value != null and value !=''">
+					and title like '%'|| #{keyword} ||'%'
+		</if>
+		<![CDATA[	
+ 			ORDER BY b.no desc
+		]]>
+	</select>
+
+	<select id="list3" parameterType="map" resultType="BoardVo">
+		<![CDATA[
+			SELECT  r.rNum,
+        			r.no,
+        			r.name,
+        			r.hit,
+        			r.regDate,
+        			r.title,
+        			r.content
+			FROM    (SELECT  ROWNUM rNum,
+                 			 o.no,
+                 			 o.name,
+                 			 o.hit,
+                 			 o.regDate,
+                 			 o.title,
+                 			 o.content
+         			 FROM    (SELECT  b.no,
+                          			  u.name,
+                          			  b.hit,
+                          			  TO_CHAR(b.reg_date, 'yyyy-mm-dd hh:mi:ss') regDate,
+                          			  b.title,
+                          			  b.content
+                  			  FROM    board b, users u
+                  			  WHERE   b.user_no = u.no
+		]]>
+		<if test="keyword != null and keyword !=''">
+									  and title like '%'|| #{keyword} ||'%'
+		</if>
+		<![CDATA[	
+						 			  ORDER BY b.no desc)o)r
+	  		WHERE	r.rNum >= #{startNum}
+					and r.rNum <= #{endNum}
+		]]>
+	</select>
+
 	<insert id="write" parameterType="BoardVo">
 		<![CDATA[
 			INSERT INTO board VALUES(seq_board_no.NEXTVAL, #{title}, #{content}, default, sysdate, #{user_no})
@@ -71,5 +126,16 @@
 			UPDATE board SET title = #{title}, content = #{content} WHERE no = #{no}
 		]]>
 	</update>
+
+	<select id="selectTotalCnt" parameterType="String" resultType="int">
+		<![CDATA[
+			SELECT  count(*)
+			FROM    board b, users u
+			WHERE   b.user_no = u.no
+			]]>
+		<if test="value != null and value !=''">
+					and title like '%'|| #{keyword} ||'%'
+		</if>
+	</select>
 
 </mapper>
