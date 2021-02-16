@@ -2,7 +2,7 @@ CREATE TABLE rboard (no NUMBER,
                      user_no NUMBER NOT NULL,
                      title VARCHAR2(500),
                      content VARCHAR2(4000),
-                     hit NUMBER,
+                     hit NUMBER DEFAULT 0,
                      reg_date DATE,
                      group_no NUMBER,
                      order_no NUMBER,
@@ -30,3 +30,5 @@ DROP SEQUENCE seq_rboard_no;
 CREATE SEQUENCE seq_rboard_no INCREMENT BY 1 START WITH 1;
 
 INSERT INTO rboard VALUES(seq_rboard_no.NEXTVAL, 'test', 'test', default, sysdate, 1);
+
+DROP TABLE rboard;
