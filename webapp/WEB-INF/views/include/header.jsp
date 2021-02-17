@@ -17,7 +17,7 @@
 
 		<c:otherwise>
 			<ul>
-				<li>${sessionScope.authUser.name } 님 안녕하세요^^</li>
+				<li>${sessionScope.authUser.name }님 안녕하세요^^</li>
 				<li><a href="${pageContext.request.contextPath }/user/logout">로그아웃</a></li>
 				<li><a href="${pageContext.request.contextPath }/user/modifyForm">회원정보수정</a></li>
 			</ul>
@@ -30,8 +30,8 @@
 <div id="nav">
 	<ul>
 		<li><a href="${pageContext.request.contextPath }/gbc/addList">방명록</a></li>
-		<li><a href="">갤러리</a></li>
-		<li><a href="${pageContext.request.contextPath }/board/list">게시판</a></li>
+		<li><a href="${pageContext.request.contextPath }/gallery/list">갤러리</a></li>
+		<li><a href="${pageContext.request.contextPath }/board/list3">게시판</a></li>
 		<li><a href="">입사지원서</a></li>
 	</ul>
 	<div class="clear"></div>

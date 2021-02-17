@@ -140,8 +140,8 @@
 			/*
 			// contentType : "application/json",
 			data : guestbookVo,
-			*/
-			
+			 */
+
 			contentType : "application/json",
 			data : JSON.stringify(guestbookVo),
 

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gallery">
+
+	<!-- 전체리스트 -->
+	<select id="selectList" resultType="GalleryVo">
+		<![CDATA[
+			SELECT	g.no,
+					g.user_no,
+					g.content,
+					g.filePath,
+					g.orgName,
+					g.saveName,
+					g.fileSize,
+					u.name
+			FROM	gallery g, users u
+			WHERE	g.user_no = u.no
+			ORDER BY g.no desc
+		]]>
+	</select>
+
+	<!-- 등록 -->
+	<insert id="insert" parameterType="GalleryVo">
+		<![CDATA[
+			INSERT INTO gallery VALUES(seq_gallery_no.NEXTVAL, #{user_no}, #{content}, #{filePath}, #{orgName}, #{saveName}, #{fileSize})
+		]]>
+	</insert>
+
+	<!-- 이미지 하나 가져오기 -->
+	<select id="selectOne" parameterType="GalleryVo" resultType="GalleryVo">
+		<![CDATA[
+			SELECT	g.no,
+					g.user_no,
+					g.content,
+					g.filePath,
+					g.orgName,
+					g.saveName,
+					g.fileSize,
+					u.name
+			FROM	gallery g, users u
+			WHERE	g.user_no = u.no
+					and g.no = #{no}
+			ORDER BY g.no desc
+		]]>
+	</select>
+
+	<!-- 삭제 -->
+	<delete id="delete" parameterType="int">
+		<![CDATA[
+			DELETE FROM gallery WHERE no = #{no}
+		]]>
+	</delete>
+
+</mapper>
